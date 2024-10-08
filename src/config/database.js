@@ -1,24 +1,20 @@
-import {createPool} from 'mysql2/promise';
-import dotenv from 'dotenv';
-dotenv.config()
+import dotenv from "dotenv";
+import mysql from "mysql2/promise";
 
-const db = createPool(
-    {
-        host: process.env.DB_HOST,
-        user: process.env.MYSQL_USER,
-        password: process.env.MYSQL_PASSWORD,
-        database: process.env.MYSQL_DATABASE,
-        connectionLimit: 10
-    }
-)
-// const db = createPool(
-//     {
-//         host: 'localhost',
-//         user: 'test_user',
-//         password: 'password123',
-//         database: 'gestion_recette',
-//         connectionLimit: 10
-//     }
-// )
-
-export default  db;
+dotenv.config();
+const db = mysql.createPool({
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+});
+async function testConnection() {
+  try {
+    const [rows] = await db.query("SELECT 1 + 1 AS solution");
+    console.log("La solution est :", rows[0].solution);
+  } catch (error) {
+    console.error("Erreur lors de la connexion à la base de données:", error);
+  }
+}
+testConnection();
+export default db;

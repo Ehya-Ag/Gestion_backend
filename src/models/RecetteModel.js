@@ -1,6 +1,19 @@
 import db from "../config/database.js";
 
 class RecetteService {
+  static async checkRecette(titre) {
+    const [rows] = await db.query(
+      "SELECT COUNT(*) AS count FROM recettes WHERE titre = ?",
+      [titre],
+    );
+    return rows[0].count;
+  }
+  static async getRecetteByTitle(titre) {
+    const [rows] = await db.query("SELECT * FROM recettes WHERE titre = ?", [
+      titre,
+    ]);
+    return rows.length ? rows[0] : null;
+  }
   static async getAllRecettes() {
     try {
       const [rows] = await db.query("SELECT * FROM recettes");
@@ -112,7 +125,7 @@ class RecetteService {
       console.error("Error deleting category:", error.message);
       throw error;
     }
-    checkRecipe;
+    checkRecette;
   }
 }
 

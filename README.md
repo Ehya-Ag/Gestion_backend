@@ -8,75 +8,110 @@ Avant de commencer, assurez-vous d'avoir installé :
 
 - [Node.js](https://nodejs.org/) (version 14 ou supérieure)
 - [MySQL](https://dev.mysql.com/downloads/installer/) (version 5.7 ou supérieure)
-- Un outil de gestion de requêtes API comme [Postman](https://www.postman.com/) ou `curl`.
+- Un outil de gestion de requêtes API comme [Insomnia](https://insomnia.rest/download) .
+- [Docker](https://www.docker.com/products/docker-desktop/)
 
-## Endpoints de l'API
+## Étapes d'installation
 
-Méthode Endpoint------------------------------Description
-
-- GET /api/recettes---------------------Récupère la liste de toutes les recettes.
-- GET /api/recettes/:id-----------------Récupère les détails d'une recette par ID.
-- POST /api/recettes---------------------------Crée une nouvelle recette.
-
-- PUT /api/recettes/:id-------------------------Met à jour une recette par ID.
-
-- DELETE /api/recettes/:id-------------------Supprime une recette par ID.
-
-## Exemples de requêtes
-
-- Récupérer toutes les recettes
+- Clonez le dépôt :
 
 ```
-http://localhost:3000/api/recettes
+git clone https://github.com/Ehya-Ag/Gestion_backend.git
 ```
 
-- Créer une nouvelle recette
+## Accédez au répertoire du projet :
 
 ```
-http://localhost:3000/api/recettes \
+cd Gestion_API_RESTful
 ```
 
-- Mettre à jour une recette
-
-```
-http://localhost:3000/api/recettes/1 \
-```
-
-- Supprimer une recette
-
-```
-http://localhost:3000/api/recettes/1
-```
-
-## Installation
-
-- Clonez le dépôt sur votre machine locale :
--
-
-```
-https://github.com/Ehya-Ag/gestion-recettes-API.git
-```
-
-```
-cd gestion-recette-API
-```
-
-- Installer les dépendances
+## Installez les dépendances :
 
 ```
 npm install
 ```
 
+## Endpoints de l'API
+
+### 1. `GET /api/recettes`
+
+Récupère la liste de toutes les recettes.
+
+**Réponse :**
+
+- 200 OK
+
+```
+[
+    {
+        "id": 1,
+        "titre": "Recette 1",
+        "ingredients": "Ingrédient 1, Ingrédient 2",
+        "type": "entrée"
+    },
+]
+```
+
+## 2. POST /api/recettes
+
+Crée une nouvelle recette.
+
+- Corps de la requête :
+
+```
+{
+    "titre": "Recette 2",
+    "ingredients": "Ingrédient A, Ingrédient B",
+    "type": "dessert"
+}
+```
+
+Réponse :
+
+201
+
+```
+{
+    "id": 2,
+    "titre": "Recette 2",
+    "ingredients": "Ingrédient A, Ingrédient B",
+    "type": "plat"
+}
+```
+
+## 3. GET /api/recettes/{id}
+
+Récupère les détails d'une recette par son ID.
+
+- Réponse :
+
+200 OK
+
+```
+{
+    "id": 1,
+    "titre": "Recette 1",
+    "ingredients": "Ingrédient 1, Ingrédient 2",
+    "type": "plat"
+}
+```
+
+404 Not Found (si la recette n'existe pas)
+
+## Configurez les paramètres de connexion à la base de données dans le fichier de configuration.
+
 - Configurer l'environnement
-  Créez un fichier .env à la racine du projet et ajoutez les configurations nécessaires (par exemple, pour la base de données).
+  Renommer le fichier .env.exemple en .env à la racine du projet et ajoutez les configurations nécessaires (par exemple, pour la base de données).
 
 - Exemple .env :
 
 ```
 DB_HOST=localhost
-DB_DATABASE=database_name
-DB_USERNAME=username
-DB_PASSWORD=password
+MYSQL_ROOT_PASSWORD=votreMotDePasse
+DB_DATABASE=votreBaseDeDonnée
+DB_USER=votreNomUtilisateur
+DB_PASSWORD=votreMotDePasse
+PORT=3000
 ```
 
 - Démarrer le projet
@@ -88,38 +123,46 @@ npm start
 L'API sera accessible à [http://localhost:3000](http://localhost:3000)
 
 - Exécution des tests unitaires
-- Installer le framwork
+  Assurez-vous que jasmine un framework de test est installé :
 
-```
-  npm install --save-dev jasmine
-```
-
-```
-  npm install --save-dev jasmine-spec-reporter
-```
-
-Exécuter les tests
 Lancez les tests avec la commande suivante :
 
 ```
 npm test
 ```
 
-- Construction et lancement du conteneur Docker
+## Tests ESLint et formater avec Prettier
+
+- Pour s'assurer que le code respecte les standards de style définis par ESLint, vous pouvez exécuter les tests ESLint :
 
 ```
-docker compose -f "docker-compose.yml" up -d --build
+npm run lint
 ```
 
-- Lancer le conteneur
-  Une fois l'image construite, vous pouvez lancer le conteneur avec la commande suivante :
+- Corriger automatiquement les erreurs avec ESLint
 
 ```
-docker run -d -p 3000:80 gestion_recette_api:latest
+npm run lint:fix
 ```
 
-L'application sera disponible à http://localhost:3000.
+- Formatage du commande
+
+```
+npm run format
+```
+
+# Docker
+
+## Construction de l'image Docker
+
+- Pour construire l'image Docker, exécutez :
+
+```
+docker-compose up --build
+```
+
+L'API sera accessible à http://localhost:3000.
 
 ## Auteur
 
-Projet réalisé en binôme par [Ehya Agg](https://github.com/Ehya-Ag) et [Ethman Ly](https://github.com/OusmaneLyDev).
+Projet réalisé par [Ehya-Ag](https://github.com/Ehya-Ag)

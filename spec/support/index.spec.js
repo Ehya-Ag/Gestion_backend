@@ -15,7 +15,7 @@ describe("Recipe tests", () => {
   });
 
   it("can be update", async () => {
-    const recipe = { titre: "riz au poisson", ingredient: "riz, poisson", type: "entrée", };
+    const recipe = { titre: "riz au poisson", ingredient: "riz, poisson", type: "entrée", id_categorie: 2 };
     const result = await RecetteService.updateRecette(
       1,
         recipe.titre,

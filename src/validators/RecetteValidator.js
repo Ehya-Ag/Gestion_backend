@@ -32,11 +32,11 @@ const addRequestValidator = [
       .isEmpty()
       .withMessage("Le type de recette est obligatoire!")
       .bail()
-      .isIn(['entrée', 'plat', 'dessert'])
+      .isIn(['entrée', 'plat', 'dessert', 'Entrée', 'Plat', 'Dessert'])
       .withMessage("Le type de recette doit être l'une des valeurs suivantes : entrée, plat, dessert."),
   
     (req, res, next) => {
-      for (const key of ['titre', 'ingredient', 'type']) {
+      for (const key of ['entrée', 'plat', 'dessert', 'Entrée', 'Plat', 'Dessert']) {
         if (req.body[key] === null) {
           return res.status(StatusCodes.UNPROCESSABLE_ENTITY).json({ errors: [{ msg: `${key.charAt(0).toUpperCase() + key.slice(1)} ne doit pas être null!` }] });
         }
@@ -95,7 +95,7 @@ const updateRequestValidator = [
     .isEmpty()
     .withMessage("Le type de recette est obligatoire!")
     .bail()
-    .isIn(["Entrée", "Plat", "Dessert"])
+    .isIn(['entrée', 'plat', 'dessert', 'Entrée', 'Plat', 'Dessert'])
     .withMessage(
       "Le type de recette doit être l'une des valeurs suivantes : entrée, plat, dessert.",
     ),

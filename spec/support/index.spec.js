@@ -4,21 +4,24 @@ describe("Recipe tests", () => {
   let recipeId = null;
 
   it("can be create", async () => {
-    const recipe = { titre: "bon", type: "dessert", ingredient: "farime", id_categorie: 2 };
+    const recipe = { titre: "Pain au oeuf", ingredient: "farime, oeuf", type: "dessert", id_categorie: 2 };
     const result = await RecetteService.createRecette(
       recipe.titre,
-      recipe.type,
       recipe.ingredient,
+      recipe.type,
+      recipe.id_categorie
     );
+    expect(result).not.toBeNull();
   });
 
   it("can be update", async () => {
-    const recipe = { titre: "bah", type: "test", ingredient: "challenge" };
+    const recipe = { titre: "riz au poisson", ingredient: "riz, poisson", type: "entrée", };
     const result = await RecetteService.updateRecette(
       1,
-      recipe.titre,
-      recipe.type,
-      recipe.ingredient,
+        recipe.titre,
+        recipe.ingredient,
+        recipe.type,
+        recipe.id_categorie
     );
     recipeId = result.insertId;
     const recipeCreated = await RecetteService.getRecetteById(1);
@@ -28,11 +31,12 @@ describe("Recipe tests", () => {
 
   it("can not be create", async () => {
     try {
-      const recipe = { titre: null, type: "dessert", ingredient: "farime" };
+      const recipe = { titre: null, type: "dessert", ingredient: "farime", id_categorie: 2 };
       const result = await RecetteService.createRecette(
         recipe.titre,
         recipe.type,
         recipe.ingredient,
+        recipe.id_categorie
       );
       recipeId = result.insertId;
       const recipeCreated = await RecetteService.getRecetteById(recipeId);
